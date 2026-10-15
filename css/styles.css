@@ -1,0 +1,1096 @@
+/* ==========================================================================
+   Pulse One — Landing page styles
+   Mobile-first: base styles target small screens, media queries add layout.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design tokens
+   -------------------------------------------------------------------------- */
+:root {
+  /* Fonts */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: clamp(1.75rem, 3vw + 1rem, 2.75rem);
+  --font-size-hero: clamp(2.5rem, 6vw + 1rem, 4.5rem);
+
+  /* Spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  /* Layout */
+  --container-max: 72rem;
+  --container-narrow: 44rem;
+  --gutter: var(--space-4);
+  --header-height: 4rem;
+
+  /* Shape */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-pill: 999px;
+
+  /* Motion */
+  --duration-fast: 200ms;
+  --duration-reveal: 700ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Colors — light theme (default) */
+  --color-bg: #ffffff;
+  --color-bg-alt: #f5f6fa;
+  --color-surface: #ffffff;
+  --color-header-bg: rgb(255 255 255 / 0.8);
+  --color-text: #0d0f1a;
+  --color-text-muted: #5a6072;
+  --color-border: #e4e6ee;
+  --color-accent: #5146ff;
+  --color-accent-hover: #3f34e8;
+  --color-accent-text: #4a3ff5;
+  --color-accent-soft: rgb(81 70 255 / 0.1);
+  --color-on-accent: #ffffff;
+  --color-success: #12805c;
+  --color-error: #c62a3a;
+  --color-shadow: rgb(13 15 26 / 0.08);
+  --color-product-shell-light: #ffffff;
+  --color-product-shell-dark: #c9cedd;
+  --color-product-tip: #2a2d3a;
+  --color-product-case: #eceff6;
+
+  --shadow-md: 0 8px 24px var(--color-shadow);
+  --shadow-lg: 0 24px 48px var(--color-shadow);
+}
+
+/* Dark theme only overrides colors; every other token is shared */
+:root[data-theme="dark"] {
+  --color-bg: #0a0b12;
+  --color-bg-alt: #10121c;
+  --color-surface: #161927;
+  --color-header-bg: rgb(10 11 18 / 0.8);
+  --color-text: #f2f3f8;
+  --color-text-muted: #9aa0b4;
+  --color-border: #262a3b;
+  --color-accent-text: #a29cff;
+  --color-accent-soft: rgb(124 115 255 / 0.14);
+  --color-success: #3ccf97;
+  --color-error: #ff6b78;
+  --color-shadow: rgb(0 0 0 / 0.4);
+  --color-product-shell-light: #f5f6fa;
+  --color-product-shell-dark: #9ca3b8;
+  --color-product-case: #1d2131;
+}
+
+/* --------------------------------------------------------------------------
+   2. Base
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-padding-top: var(--header-height);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+svg {
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Utilities
+   -------------------------------------------------------------------------- */
+.container {
+  width: min(100% - 2 * var(--gutter), var(--container-max));
+  margin-inline: auto;
+}
+
+.container--narrow {
+  max-width: var(--container-narrow);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 100;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+.eyebrow {
+  margin-bottom: var(--space-3);
+  color: var(--color-accent-text);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* --------------------------------------------------------------------------
+   4. Buttons
+   -------------------------------------------------------------------------- */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 3rem;
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease, border-color var(--duration-fast) ease,
+    translate var(--duration-fast) ease;
+}
+
+.button:hover {
+  translate: 0 -1px;
+}
+
+.button--primary {
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+}
+
+.button--primary:hover {
+  background-color: var(--color-accent-hover);
+}
+
+.button--ghost {
+  border-color: var(--color-border);
+  background-color: transparent;
+  color: var(--color-text);
+}
+
+.button--ghost:hover {
+  border-color: var(--color-text-muted);
+}
+
+.button--small {
+  min-height: 2.5rem;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-sm);
+}
+
+/* --------------------------------------------------------------------------
+   5. Header & navigation
+   -------------------------------------------------------------------------- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-header-bg);
+  backdrop-filter: blur(12px);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--header-height);
+}
+
+.nav__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-right: auto;
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+}
+
+.nav__logo-mark {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.nav__logo-mark circle {
+  fill: var(--color-accent);
+}
+
+.nav__logo-mark path {
+  fill: none;
+  stroke: var(--color-on-accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Hamburger: three bars that morph into an X while the menu is open */
+.nav__toggle {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0 11px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  cursor: pointer;
+}
+
+.nav__toggle-bar {
+  height: 2px;
+  border-radius: 2px;
+  background-color: var(--color-text);
+  transition: transform var(--duration-fast) ease, opacity var(--duration-fast) ease;
+}
+
+.nav__toggle[aria-expanded="true"] .nav__toggle-bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.nav__toggle[aria-expanded="true"] .nav__toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.nav__toggle[aria-expanded="true"] .nav__toggle-bar:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Mobile menu: a panel under the header. `visibility` keeps hidden links out of the tab order */
+.nav__menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--gutter) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-0.5rem);
+  transition: opacity var(--duration-fast) ease, transform var(--duration-fast) ease,
+    visibility var(--duration-fast);
+}
+
+.nav__menu--open {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.nav__list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav__link {
+  display: block;
+  padding: var(--space-3) 0;
+  color: var(--color-text-muted);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--duration-fast) ease;
+}
+
+.nav__link:hover {
+  color: var(--color-text);
+}
+
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--color-text-muted);
+}
+
+.theme-toggle__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Show the icon for the theme you'd switch to */
+.theme-toggle__icon--sun,
+:root[data-theme="dark"] .theme-toggle__icon--moon {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle__icon--sun {
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   6. Hero
+   -------------------------------------------------------------------------- */
+.hero {
+  padding-block: var(--space-8) var(--space-9);
+  background-image: radial-gradient(ellipse at 70% 0%, var(--color-accent-soft), transparent 60%);
+  overflow: hidden;
+}
+
+.hero__inner {
+  display: grid;
+  gap: var(--space-7);
+  align-items: center;
+}
+
+.hero__title {
+  margin-bottom: var(--space-5);
+  font-size: var(--font-size-hero);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.hero__title-accent {
+  color: var(--color-accent-text);
+}
+
+.hero__text {
+  max-width: 34rem;
+  margin-bottom: var(--space-6);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-lg);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-7);
+}
+
+.hero__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5) var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.hero__stat-value {
+  display: block;
+  color: var(--color-text);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.hero__visual {
+  width: min(100%, 26rem);
+  margin-inline: auto;
+}
+
+/* Product illustration (inline SVG). Colors come from tokens so it follows the theme */
+.product__stop--glow {
+  stop-color: var(--color-accent);
+  stop-opacity: 0.35;
+}
+
+.product__stop--glow-fade {
+  stop-color: var(--color-accent);
+  stop-opacity: 0;
+}
+
+.product__stop--shell-light {
+  stop-color: var(--color-product-shell-light);
+}
+
+.product__stop--shell-dark {
+  stop-color: var(--color-product-shell-dark);
+}
+
+.product__stem-cap {
+  fill: var(--color-accent);
+}
+
+.product__tip {
+  fill: var(--color-product-tip);
+}
+
+.product__sensor {
+  fill: var(--color-product-tip);
+  stroke: var(--color-accent);
+  stroke-width: 3;
+}
+
+.product__case-body {
+  fill: var(--color-product-case);
+  stroke: var(--color-border);
+  stroke-width: 2;
+}
+
+.product__case-seam {
+  stroke: var(--color-border);
+  stroke-width: 2;
+}
+
+.product__case-led {
+  fill: var(--color-success);
+}
+
+.product__bud {
+  filter: drop-shadow(0 18px 24px var(--color-shadow));
+  animation: float 6s ease-in-out infinite;
+}
+
+.product__bud--right {
+  animation-delay: -3s;
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Sections (shared)
+   -------------------------------------------------------------------------- */
+.section {
+  padding-block: var(--space-8);
+}
+
+.section--alt {
+  background-color: var(--color-bg-alt);
+}
+
+.section__header {
+  max-width: 40rem;
+  margin: 0 auto var(--space-7);
+  text-align: center;
+}
+
+.section__title {
+  margin-bottom: var(--space-3);
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+
+.section__text {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-lg);
+}
+
+/* --------------------------------------------------------------------------
+   8. Features
+   -------------------------------------------------------------------------- */
+.features {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.feature-card {
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  transition: translate var(--duration-fast) ease, box-shadow var(--duration-fast) ease,
+    border-color var(--duration-fast) ease;
+}
+
+.feature-card:hover {
+  translate: 0 -4px;
+  border-color: var(--color-accent-soft);
+  box-shadow: var(--shadow-lg);
+}
+
+.feature-card__icon {
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: var(--space-5);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent-text);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.feature-card__title {
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+.feature-card__text {
+  color: var(--color-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   9. How it works
+   -------------------------------------------------------------------------- */
+.steps {
+  display: grid;
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  padding-top: var(--space-5);
+  border-top: 2px solid var(--color-border);
+}
+
+.step__number {
+  display: block;
+  margin-bottom: var(--space-3);
+  color: var(--color-accent-text);
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.step__title {
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+}
+
+.step__text {
+  color: var(--color-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   10. Specs table
+   -------------------------------------------------------------------------- */
+.specs {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+}
+
+.specs__table {
+  width: 100%;
+  min-width: 32rem;
+  border-collapse: collapse;
+}
+
+.specs__caption {
+  padding: var(--space-4);
+  caption-side: bottom;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.specs__table th,
+.specs__table td {
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.specs__table thead th {
+  font-weight: 700;
+}
+
+.specs__table tbody th {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.specs__highlight {
+  background-color: var(--color-accent-soft);
+}
+
+.specs__table thead .specs__highlight {
+  color: var(--color-accent-text);
+}
+
+/* --------------------------------------------------------------------------
+   11. Pricing
+   -------------------------------------------------------------------------- */
+.pricing {
+  display: grid;
+  gap: var(--space-5);
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.price-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+}
+
+.price-card--featured {
+  border: 2px solid var(--color-accent);
+  box-shadow: var(--shadow-lg);
+}
+
+.price-card__badge {
+  align-self: flex-start;
+  margin-bottom: var(--space-4);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent-text);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.price-card__name {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+.price-card__price {
+  margin-block: var(--space-2);
+}
+
+.price-card__amount {
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.price-card__summary {
+  margin-bottom: var(--space-5);
+  color: var(--color-text-muted);
+}
+
+.price-card__list {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  list-style: none;
+}
+
+.price-card__list li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+/* CSS-only checkmark: a rotated L shape */
+.price-card__list li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 0.4em;
+  height: 0.75em;
+  border-right: 2px solid var(--color-accent-text);
+  border-bottom: 2px solid var(--color-accent-text);
+  transform: rotate(45deg) translateY(-0.1em);
+}
+
+.price-card__button {
+  margin-top: auto;
+}
+
+/* --------------------------------------------------------------------------
+   12. FAQ
+   -------------------------------------------------------------------------- */
+.faq__item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.faq__question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  padding-block: var(--space-5);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+}
+
+/* Hide the native disclosure triangle in Safari; we draw our own icon */
+.faq__question::-webkit-details-marker {
+  display: none;
+}
+
+.faq__question::after {
+  content: "+";
+  flex-shrink: 0;
+  color: var(--color-accent-text);
+  font-size: var(--font-size-xl);
+  font-weight: 400;
+  line-height: 1;
+  transition: transform var(--duration-fast) ease;
+}
+
+.faq__item[open] .faq__question::after {
+  transform: rotate(45deg);
+}
+
+.faq__answer {
+  padding-bottom: var(--space-5);
+  color: var(--color-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   13. Newsletter
+   -------------------------------------------------------------------------- */
+.newsletter {
+  padding: var(--space-7) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  text-align: center;
+}
+
+.newsletter__form {
+  max-width: 30rem;
+  margin: var(--space-6) auto 0;
+  text-align: left;
+}
+
+.newsletter__label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.newsletter__row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.newsletter__input {
+  flex: 1;
+  min-height: 3rem;
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font: inherit;
+  transition: border-color var(--duration-fast) ease;
+}
+
+.newsletter__input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.newsletter__input:focus-visible {
+  outline-offset: 0;
+  border-color: var(--color-accent);
+}
+
+.newsletter__input[aria-invalid="true"] {
+  border-color: var(--color-error);
+}
+
+.newsletter__message {
+  min-height: 1.6em;
+  margin-top: var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+.newsletter__message--error {
+  color: var(--color-error);
+}
+
+.newsletter__message--success {
+  color: var(--color-success);
+}
+
+/* --------------------------------------------------------------------------
+   14. Footer
+   -------------------------------------------------------------------------- */
+.footer {
+  padding-block: var(--space-7);
+  border-top: 1px solid var(--color-border);
+}
+
+.footer__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  text-align: center;
+}
+
+.footer__inner .nav__logo {
+  margin-right: 0;
+}
+
+.footer__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2) var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer__link {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  text-decoration: none;
+}
+
+.footer__link:hover {
+  color: var(--color-text);
+}
+
+.footer__note {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* --------------------------------------------------------------------------
+   15. Scroll reveal
+   `.has-reveal` is added by JS, so content stays visible if scripts fail.
+   A keyframe animation (not a transition) is used so it doesn't clash
+   with the hover transitions on cards.
+   -------------------------------------------------------------------------- */
+.has-reveal .reveal {
+  opacity: 0;
+}
+
+.has-reveal .reveal.is-visible {
+  opacity: 1;
+  animation: reveal var(--duration-reveal) var(--ease-out) var(--reveal-delay, 0ms) both;
+}
+
+/* Stagger cards that sit side by side in a row of three */
+.features .reveal:nth-child(3n + 2),
+.steps .reveal:nth-child(3n + 2),
+.pricing .reveal:nth-child(3n + 2) {
+  --reveal-delay: 100ms;
+}
+
+.features .reveal:nth-child(3n),
+.steps .reveal:nth-child(3n),
+.pricing .reveal:nth-child(3n) {
+  --reveal-delay: 200ms;
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16. Media queries (mobile-first)
+   -------------------------------------------------------------------------- */
+@media (min-width: 480px) {
+  .newsletter__row {
+    flex-direction: row;
+  }
+
+  .newsletter {
+    padding-inline: var(--space-7);
+  }
+}
+
+@media (min-width: 600px) {
+  .features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --gutter: var(--space-6);
+  }
+
+  .section {
+    padding-block: var(--space-9);
+  }
+
+  .steps {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer__inner {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+
+@media (min-width: 900px) {
+  /* Desktop nav: the menu is always visible inline and the hamburger is hidden */
+  .nav {
+    gap: var(--space-4);
+  }
+
+  .nav__logo {
+    margin-right: 0;
+  }
+
+  .nav__toggle {
+    display: none;
+  }
+
+  .nav__menu {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-5);
+    margin-left: auto;
+    padding: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+
+  .nav__list {
+    flex-direction: row;
+    gap: var(--space-5);
+  }
+
+  .nav__link {
+    padding: 0;
+    font-size: var(--font-size-sm);
+  }
+}
+
+@media (min-width: 960px) {
+  .hero {
+    padding-block: var(--space-9);
+  }
+
+  .hero__inner {
+    grid-template-columns: 1.1fr 1fr;
+  }
+
+  .hero__visual {
+    width: 100%;
+    max-width: 30rem;
+  }
+
+  .features,
+  .pricing {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .price-card--featured {
+    margin-block: calc(-1 * var(--space-4));
+    padding-block: calc(var(--space-6) + var(--space-4));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   17. Reduced motion
+   Users who ask for less motion get instant state changes and no floating.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
