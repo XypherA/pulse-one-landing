@@ -7,6 +7,8 @@
    1. Design tokens
    -------------------------------------------------------------------------- */
 :root {
+  color-scheme: light;
+
   /* Fonts */
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-size-sm: 0.875rem;
@@ -71,6 +73,8 @@
 
 /* Dark theme only overrides colors; every other token is shared */
 :root[data-theme="dark"] {
+  color-scheme: dark;
+
   --color-bg: #0a0b12;
   --color-bg-alt: #10121c;
   --color-surface: #161927;
