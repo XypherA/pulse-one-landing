@@ -2,7 +2,7 @@
 
 A responsive landing page for **Pulse One**, a fictional pair of premium wireless earbuds. It's built with plain HTML, CSS and vanilla JavaScript: no frameworks, no libraries and no build step.
 
-**Live demo:** _coming soon_
+**Live demo:** [xyphera.github.io/pulse-one-landing](https://xyphera.github.io/pulse-one-landing/)
 
 ## Features
 
